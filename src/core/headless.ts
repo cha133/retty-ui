@@ -15,7 +15,14 @@ export function renderHeadless(root: Renderable, width: number, height: number):
   return { canvas, root };
 }
 
-function renderNodeHeadless(node: Renderable, canvas: Canvas, x: number, y: number, w: number, h: number): void {
+function renderNodeHeadless(
+  node: Renderable,
+  canvas: Canvas,
+  x: number,
+  y: number,
+  _w: number,
+  _h: number,
+): void {
   if (!node.visible) return;
   // yoga-layout-tui's getComputedLeft/Top return offsets RELATIVE to the
   // parent (matches upstream Yoga C++ / Yoga JS WASM / Ink TS port / v0.2

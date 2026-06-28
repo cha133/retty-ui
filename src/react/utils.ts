@@ -8,12 +8,12 @@
 // `setStyle` does diff between old/new style objects (deletes stale keys by
 // setting them to null/undefined, applies new keys, skips unchanged values).
 
-import type { Instance, Props, Type } from "./types.ts";
-import type { LayoutStyle } from "../core/renderable.ts";
-import type { Box, BorderStyle } from "../components/box.ts";
+import type { BorderStyle, Box } from "../components/box.ts";
+import type { ScrollBox } from "../components/scrollbox.ts";
 import type { Text } from "../components/text.ts";
 import type { TextArea } from "../components/textarea.ts";
-import type { ScrollBox } from "../components/scrollbox.ts";
+import type { LayoutStyle } from "../core/renderable.ts";
+import type { Instance, Props, Type } from "./types.ts";
 
 /**
  * Map a style value (string | number) into the typed union used by

@@ -1,10 +1,13 @@
+import { Canvas, COLOR_DEFAULT, parseColor, StyleFlags } from "../core/canvas.ts";
 import { Renderable, type RenderableOptions } from "../core/renderable.ts";
-import { Canvas, StyleFlags, COLOR_DEFAULT, parseColor } from "../core/canvas.ts";
 import { Edge } from "../core/yoga.ts";
 
 export type BorderStyle = "single" | "double" | "round" | "classic" | "none";
 
-const BORDER_CHARS: Record<Exclude<BorderStyle, "none">, { tl: string; tr: string; bl: string; br: string; h: string; v: string }> = {
+const BORDER_CHARS: Record<
+  Exclude<BorderStyle, "none">,
+  { tl: string; tr: string; bl: string; br: string; h: string; v: string }
+> = {
   single: { tl: "┌", tr: "┐", bl: "└", br: "┘", h: "─", v: "│" },
   double: { tl: "╔", tr: "╗", bl: "╚", br: "╝", h: "═", v: "║" },
   round: { tl: "╭", tr: "╮", bl: "╰", br: "╯", h: "─", v: "│" },
@@ -44,7 +47,20 @@ export class Box extends Renderable {
   private flags: number;
 
   constructor(opts: BoxOptions = {}) {
-    const { borderStyle, borderColor, backgroundColor, color, bold, italic, underline, dim, strikethrough, blink, inverse, ...rest } = opts;
+    const {
+      borderStyle,
+      borderColor,
+      backgroundColor,
+      color,
+      bold,
+      italic,
+      underline,
+      dim,
+      strikethrough,
+      blink,
+      inverse,
+      ...rest
+    } = opts;
     super(rest);
     this.borderStyle = borderStyle ?? "none";
     this.borderColor = parseColor(borderColor ?? color);

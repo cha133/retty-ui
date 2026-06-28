@@ -10,18 +10,9 @@
 //   - onSubmit wiring through the React reconciler
 
 import { useEffect, useRef, useState } from "react";
-
-import {
-  render,
-  Box,
-  Text,
-  TextArea,
-  ScrollBox,
-  useApp,
-  useInput,
-} from "../src/react/index.ts";
-import type { TextArea as TextareaCls } from "../src/components/textarea.ts";
 import type { ScrollBox as ScrollboxCls } from "../src/components/scrollbox.ts";
+import type { TextArea as TextareaCls } from "../src/components/textarea.ts";
+import { Box, render, ScrollBox, Text, TextArea, useApp, useInput } from "../src/react/index.ts";
 
 interface LogLine {
   id: number;
@@ -46,7 +37,7 @@ function App() {
   const { unmount } = useApp();
 
   // Global shortcuts (fan-out: every useInput listener gets every keypress).
-  useInput((input, key) => {
+  useInput((_input, key) => {
     if (key.ctrl && key.name === "c") {
       unmount();
     }
@@ -76,12 +67,20 @@ function App() {
 
   return (
     <Box style={{ flexDirection: "column", height: 24, width: 80 }}>
-      <Box style={{ height: 3, paddingX: 1, flexDirection: "row" }} borderStyle="double" borderColor="#3b8eea">
+      <Box
+        style={{ height: 3, paddingX: 1, flexDirection: "row" }}
+        borderStyle="double"
+        borderColor="#3b8eea"
+      >
         <Text text="Retty TUI " color="#3b8eea" bold />
         <Text text="v0.3.0 (react)" color="#787878" dim />
       </Box>
 
-      <Box style={{ flexGrow: 1, paddingX: 1, paddingY: 1, flexDirection: "column" }} borderStyle="single" borderColor="#5a5a5a">
+      <Box
+        style={{ flexGrow: 1, paddingX: 1, paddingY: 1, flexDirection: "column" }}
+        borderStyle="single"
+        borderColor="#5a5a5a"
+      >
         <Text text="--- Agent History Logs ---" color="#787878" dim />
         <ScrollBox ref={scrollboxRef} style={{ flexGrow: 1 }}>
           {logs.map((line) => {
@@ -92,7 +91,11 @@ function App() {
         </ScrollBox>
       </Box>
 
-      <Box style={{ minHeight: 3, paddingX: 1, paddingY: 0, flexDirection: "row" }} borderStyle="round" borderColor="#00c864">
+      <Box
+        style={{ minHeight: 3, paddingX: 1, paddingY: 0, flexDirection: "row" }}
+        borderStyle="round"
+        borderColor="#00c864"
+      >
         <Text text="$ " color="#00c864" bold />
         <TextArea
           ref={textareaRef}

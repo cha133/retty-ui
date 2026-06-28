@@ -5,13 +5,13 @@
 // mirrors the underlying imperative constructor's options + a few declarative
 // convenience props (`focused`, `style`).
 
-import type { Renderer } from "../core/renderer.ts";
+import type { ReactNode, Ref } from "react";
 import type { Box } from "../components/box.ts";
+import type { ScrollBox } from "../components/scrollbox.ts";
 import type { Text } from "../components/text.ts";
 import type { TextArea } from "../components/textarea.ts";
-import type { ScrollBox } from "../components/scrollbox.ts";
 import type { LayoutStyle, RenderableOptions } from "../core/renderable.ts";
-import type { ReactNode, Ref } from "react";
+import type { Renderer } from "../core/renderer.ts";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Host config types (consumed by react-reconciler).
@@ -67,7 +67,10 @@ export interface ColorProps {
 // Box props (maps to `Box` in ../components/box.ts).
 // ────────────────────────────────────────────────────────────────────────────
 
-export interface BoxProps extends Omit<RenderableOptions, "style" | "borderColor">, StyleFlagProps, Omit<ColorProps, "borderColor"> {
+export interface BoxProps
+  extends Omit<RenderableOptions, "style" | "borderColor">,
+    StyleFlagProps,
+    Omit<ColorProps, "borderColor"> {
   children?: ReactNode;
   /** Layout style (TUI flexbox subset — see LayoutStyle). */
   style?: LayoutStyle;
@@ -95,7 +98,10 @@ export interface TextProps extends Omit<RenderableOptions, "style">, StyleFlagPr
 // TextArea props (maps to `TextArea` in ../components/textarea.ts).
 // ────────────────────────────────────────────────────────────────────────────
 
-export interface TextAreaProps extends Omit<RenderableOptions, "style">, StyleFlagProps, ColorProps {
+export interface TextAreaProps
+  extends Omit<RenderableOptions, "style">,
+    StyleFlagProps,
+    ColorProps {
   children?: never;
   style?: LayoutStyle;
   value?: string;
@@ -112,7 +118,10 @@ export interface TextAreaProps extends Omit<RenderableOptions, "style">, StyleFl
 // ScrollBox props (maps to `ScrollBox` in ../components/scrollbox.ts).
 // ────────────────────────────────────────────────────────────────────────────
 
-export interface ScrollBoxProps extends Omit<RenderableOptions, "style">, StyleFlagProps, ColorProps {
+export interface ScrollBoxProps
+  extends Omit<RenderableOptions, "style">,
+    StyleFlagProps,
+    ColorProps {
   children?: ReactNode;
   style?: LayoutStyle;
   onScroll?: (offset: number) => void;

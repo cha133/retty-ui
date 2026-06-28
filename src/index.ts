@@ -8,5 +8,5 @@
 //
 // For the React 19 bindings, import from "retty-ui/react" instead.
 
-export * from "./core/index.ts";
 export * from "./components/index.ts";
+export * from "./core/index.ts";

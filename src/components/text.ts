@@ -1,8 +1,8 @@
+import { Canvas, parseColor, StyleFlags } from "../core/canvas.ts";
 import { Renderable, type RenderableOptions } from "../core/renderable.ts";
-import { Canvas, StyleFlags, parseColor } from "../core/canvas.ts";
 import { layoutText } from "../core/text-layout.ts";
-import { MeasureMode } from "../core/yoga.ts";
 import { charWidth } from "../core/width.ts";
+import { MeasureMode } from "../core/yoga.ts";
 
 export interface TextOptions extends RenderableOptions {
   color?: string | number;
@@ -37,7 +37,19 @@ export class Text extends Renderable {
   private _wrap: boolean;
 
   constructor(text: string = "", opts: TextOptions = {}) {
-    const { color, backgroundColor, bold, italic, underline, dim, strikethrough, blink, inverse, wrap, ...rest } = opts;
+    const {
+      color,
+      backgroundColor,
+      bold,
+      italic,
+      underline,
+      dim,
+      strikethrough,
+      blink,
+      inverse,
+      wrap,
+      ...rest
+    } = opts;
     super(rest);
     this._text = text;
     this._color = parseColor(color);

@@ -1,7 +1,7 @@
 import { Canvas, COLOR_DEFAULT, StyleFlags } from "./canvas.ts";
+import { inputManager, type KeyEvent, type MouseCallback, type MouseEvent } from "./input.ts";
+import { type IRenderer, type PasteEvent, Renderable } from "./renderable.ts";
 import { Screen } from "./screen.ts";
-import { inputManager, type KeyEvent, type MouseEvent, type MouseCallback } from "./input.ts";
-import { Renderable, type IRenderer, type PasteEvent } from "./renderable.ts";
 import { Direction } from "./yoga.ts";
 
 export interface RendererOptions {
@@ -122,7 +122,14 @@ export class Renderer implements IRenderer {
     this.flush();
   }
 
-  private renderNode(node: Renderable, canvas: Canvas, x: number, y: number, _w: number, _h: number): void {
+  private renderNode(
+    node: Renderable,
+    canvas: Canvas,
+    x: number,
+    y: number,
+    _w: number,
+    _h: number,
+  ): void {
     if (!node.visible) return;
     const nx = x + node.computedLeft;
     const ny = y + node.computedTop + node.translateY;
@@ -214,12 +221,14 @@ export class Renderer implements IRenderer {
 
           if (backFg !== currentFg) {
             if (backFg === COLOR_DEFAULT) out += "\x1b[39m";
-            else out += `\x1b[38;2;${(backFg >> 16) & 0xff};${(backFg >> 8) & 0xff};${backFg & 0xff}m`;
+            else
+              out += `\x1b[38;2;${(backFg >> 16) & 0xff};${(backFg >> 8) & 0xff};${backFg & 0xff}m`;
             currentFg = backFg;
           }
           if (backBg !== currentBg) {
             if (backBg === COLOR_DEFAULT) out += "\x1b[49m";
-            else out += `\x1b[48;2;${(backBg >> 16) & 0xff};${(backBg >> 8) & 0xff};${backBg & 0xff}m`;
+            else
+              out += `\x1b[48;2;${(backBg >> 16) & 0xff};${(backBg >> 8) & 0xff};${backBg & 0xff}m`;
             currentBg = backBg;
           }
         }
@@ -264,7 +273,13 @@ export class Renderer implements IRenderer {
     return this.hitTestNode(this.root, 0, 0, x, y);
   }
 
-  private hitTestNode(node: Renderable, ox: number, oy: number, x: number, y: number): Renderable | null {
+  private hitTestNode(
+    node: Renderable,
+    ox: number,
+    oy: number,
+    x: number,
+    y: number,
+  ): Renderable | null {
     if (!node.visible) return null;
     const absLeft = ox + node.computedLeft;
     const absTop = oy + node.computedTop;

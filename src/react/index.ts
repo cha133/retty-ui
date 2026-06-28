@@ -15,36 +15,37 @@
 // Importing "react" here so React types are loaded for downstream consumers.
 import "react";
 
-export { render } from "./renderer.ts";
-export type { RenderOptions, RenderHandle } from "./renderer.ts";
-
+// Imperative classes (also exposed, useful for advanced users / tests).
+export {
+  Box as BoxImpl,
+  ScrollBox as ScrollboxImpl,
+  Text as TextImpl,
+  TextArea as TextareaImpl,
+} from "../components/index.ts";
+// Color + style utilities (re-exported from imperative core for ergonomic JSX).
+export { COLOR_DEFAULT, parseColor, rgb, StyleFlags } from "../core/index.ts";
+export type { LayoutStyle } from "../core/renderable.ts";
 // PascalCase React components — the user-facing API. They accept `ref` as a
 // normal React 19 prop and forward it to the underlying imperative Renderable
 // (Box / Text / TextArea / ScrollBox) for direct method calls.
-export { Box, Text, TextArea, ScrollBox } from "./components.tsx";
-
-// Imperative classes (also exposed, useful for advanced users / tests).
-export { Box as BoxImpl, Text as TextImpl, TextArea as TextareaImpl, ScrollBox as ScrollboxImpl } from "../components/index.ts";
-
-export type {
-  BoxProps,
-  TextProps,
-  TextAreaProps,
-  ScrollBoxProps,
-  Container,
-} from "./types.ts";
+export { Box, ScrollBox, Text, TextArea } from "./components.tsx";
+export type { AppContextValue, UseFocusApi, UseInputOptions } from "./hooks.ts";
 
 export {
   setActiveApp,
   useApp,
+  useEffectEvent,
+  useFocus,
   useInput,
   useMouse,
   usePaste,
-  useFocus,
-  useEffectEvent,
 } from "./hooks.ts";
-export type { AppContextValue, UseFocusApi, UseInputOptions } from "./hooks.ts";
-
-// Color + style utilities (re-exported from imperative core for ergonomic JSX).
-export { rgb, COLOR_DEFAULT, parseColor, StyleFlags } from "../core/index.ts";
-export type { LayoutStyle } from "../core/renderable.ts";
+export type { RenderHandle, RenderOptions } from "./renderer.ts";
+export { render } from "./renderer.ts";
+export type {
+  BoxProps,
+  Container,
+  ScrollBoxProps,
+  TextAreaProps,
+  TextProps,
+} from "./types.ts";

@@ -2,4 +2,4 @@
 // React 19 dev runtime exports a single `jsxDEV` (not `jsx`/`jsxs`); bun/tsc
 // pick this entry automatically when `jsxImportSource` is configured for dev.
 // `package.json` exports this at "./react/jsx-dev-runtime".
-export { jsxDEV, Fragment } from "react/jsx-dev-runtime";
+export { Fragment, jsxDEV } from "react/jsx-dev-runtime";

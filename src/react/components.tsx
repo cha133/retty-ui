@@ -19,12 +19,7 @@
 
 import * as React from "react";
 
-import type {
-  BoxProps,
-  TextProps,
-  TextAreaProps,
-  ScrollBoxProps,
-} from "./types.ts";
+import type { BoxProps, ScrollBoxProps, TextAreaProps, TextProps } from "./types.ts";
 
 const h = React.createElement as unknown as (
   type: string,

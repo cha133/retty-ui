@@ -1,7 +1,7 @@
-import { test, expect } from "bun:test";
-import { Box, Text, TextArea, ScrollBox } from "../src/components/index.ts";
-import { renderHeadless } from "../src/core/headless.ts";
+import { expect, test } from "bun:test";
+import { Box, ScrollBox, Text, TextArea } from "../src/components/index.ts";
 import { rgb } from "../src/core/canvas.ts";
+import { renderHeadless } from "../src/core/headless.ts";
 
 function buildAgentTree() {
   const root = new Box({ style: { flexDirection: "column", height: 24, width: 80 } });
@@ -68,12 +68,12 @@ test("logs box fills space between header and input panel", () => {
 });
 
 test("ScrollBox shows first lines at top, border not covered", () => {
-  const { root, logsBox } = buildAgentTree();
+  const { root } = buildAgentTree();
   const { canvas } = renderHeadless(root, 80, 24);
 
   const lines = canvas.toString().split("\n");
-  expect(lines[3]![0]).toBe("┌");
-  expect(lines[3]![79]).toBe("┐");
+  expect(lines[3]?.[0]).toBe("┌");
+  expect(lines[3]?.[79]).toBe("┐");
 
   const contentRow = lines[6]!;
   expect(contentRow.includes("[User]: line 1")).toBe(true);
@@ -195,10 +195,10 @@ test("ScrollBox border still visible after scroll", () => {
   scrollbox.scrollBy(10);
   const { canvas } = renderHeadless(root, 80, 24);
   const lines = canvas.toString().split("\n");
-  expect(lines[3]![0]).toBe("┌");
-  expect(lines[3]![79]).toBe("┐");
-  expect(lines[20]![0]).toBe("└");
-  expect(lines[20]![79]).toBe("┘");
+  expect(lines[3]?.[0]).toBe("┌");
+  expect(lines[3]?.[79]).toBe("┐");
+  expect(lines[20]?.[0]).toBe("└");
+  expect(lines[20]?.[79]).toBe("┘");
 });
 
 test("ScrollBox scissor clips items outside viewport, leaving neighbors visible", () => {
@@ -215,13 +215,13 @@ test("ScrollBox scissor clips items outside viewport, leaving neighbors visible"
   const { canvas } = renderHeadless(root, 20, 10);
   const lines = canvas.toString().split("\n");
 
-  expect(lines[0]!.includes("TOP")).toBe(true);
-  expect(lines[2]!.includes("row0")).toBe(true);
-  expect(lines[7]!.includes("row5")).toBe(true);
+  expect(lines[0]?.includes("TOP")).toBe(true);
+  expect(lines[2]?.includes("row0")).toBe(true);
+  expect(lines[7]?.includes("row5")).toBe(true);
 
-  expect(lines[8]!.includes("row6")).toBe(false);
-  expect(lines[9]!.includes("row7")).toBe(false);
-  expect(lines[8]!.includes("BOT")).toBe(true);
+  expect(lines[8]?.includes("row6")).toBe(false);
+  expect(lines[9]?.includes("row7")).toBe(false);
+  expect(lines[8]?.includes("BOT")).toBe(true);
 });
 
 test("ScrollBox scrollTo clamps to maxScrollOffset", () => {
@@ -244,9 +244,9 @@ test("ScrollBox scrollToBottom shows last rows at bottom of viewport", () => {
   sb.scrollToBottom();
   const { canvas } = renderHeadless(root, 20, 10);
   const lines = canvas.toString().split("\n");
-  expect(lines[0]!.includes("row4")).toBe(true);
-  expect(lines[0]!.includes("row3")).toBe(false);
-  expect(lines[5]!.includes("row9")).toBe(true);
+  expect(lines[0]?.includes("row4")).toBe(true);
+  expect(lines[0]?.includes("row3")).toBe(false);
+  expect(lines[5]?.includes("row9")).toBe(true);
 });
 
 test("TextArea in ScrollBox keeps consistent measured height across scrolls", () => {
@@ -259,6 +259,6 @@ test("TextArea in ScrollBox keeps consistent measured height across scrolls", ()
   const h0 = tall.computedHeight;
   expect(h0).toBeGreaterThanOrEqual(2);
   sb.scrollBy(1);
-  const { canvas } = renderHeadless(root, 30, 12);
+  renderHeadless(root, 30, 12);
   expect(tall.computedHeight).toBe(h0);
 });

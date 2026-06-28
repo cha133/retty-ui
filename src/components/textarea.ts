@@ -1,9 +1,9 @@
-import { Renderable, type RenderableOptions, type PasteEvent } from "../core/renderable.ts";
-import { Canvas, StyleFlags, COLOR_DEFAULT, parseColor } from "../core/canvas.ts";
-import { layoutText } from "../core/text-layout.ts";
-import { MeasureMode } from "../core/yoga.ts";
-import { charWidth } from "../core/width.ts";
+import { Canvas, COLOR_DEFAULT, parseColor, StyleFlags } from "../core/canvas.ts";
 import type { KeyEvent } from "../core/input.ts";
+import { type PasteEvent, Renderable, type RenderableOptions } from "../core/renderable.ts";
+import { layoutText } from "../core/text-layout.ts";
+import { charWidth } from "../core/width.ts";
+import { MeasureMode } from "../core/yoga.ts";
 
 export interface TextareaOptions extends RenderableOptions {
   value?: string;
@@ -30,7 +30,16 @@ export class TextArea extends Renderable {
   physicalCursorY = -1;
 
   constructor(opts: TextareaOptions = {}) {
-    const { value, placeholder, placeholderColor, color, backgroundColor, onSubmit, onChange, ...rest } = opts;
+    const {
+      value,
+      placeholder,
+      placeholderColor,
+      color,
+      backgroundColor,
+      onSubmit,
+      onChange,
+      ...rest
+    } = opts;
     super({ ...rest, focusable: true });
     this._value = value ?? "";
     this._placeholder = placeholder ?? "";
@@ -105,7 +114,8 @@ export class TextArea extends Renderable {
         return true;
       case "backspace":
         if (this._cursorIdx > 0) {
-          this._value = this._value.slice(0, this._cursorIdx - 1) + this._value.slice(this._cursorIdx);
+          this._value =
+            this._value.slice(0, this._cursorIdx - 1) + this._value.slice(this._cursorIdx);
           this._cursorIdx--;
           this.yogaNode.markDirty();
           this._onChange?.(this._value);
@@ -114,7 +124,8 @@ export class TextArea extends Renderable {
         return true;
       case "delete":
         if (this._cursorIdx < this._value.length) {
-          this._value = this._value.slice(0, this._cursorIdx) + this._value.slice(this._cursorIdx + 1);
+          this._value =
+            this._value.slice(0, this._cursorIdx) + this._value.slice(this._cursorIdx + 1);
           this.yogaNode.markDirty();
           this._onChange?.(this._value);
           this.requestRender();
@@ -122,7 +133,7 @@ export class TextArea extends Renderable {
         return true;
       case "return":
         if (key.ctrl || key.meta) {
-          this._value = this._value.slice(0, this._cursorIdx) + "\n" + this._value.slice(this._cursorIdx);
+          this._value = `${this._value.slice(0, this._cursorIdx)}\n${this._value.slice(this._cursorIdx)}`;
           this._cursorIdx++;
           this.yogaNode.markDirty();
           this._onChange?.(this._value);
@@ -133,7 +144,8 @@ export class TextArea extends Renderable {
         return true;
       default:
         if (key.name.length === 1 && !key.ctrl && !key.meta) {
-          this._value = this._value.slice(0, this._cursorIdx) + key.name + this._value.slice(this._cursorIdx);
+          this._value =
+            this._value.slice(0, this._cursorIdx) + key.name + this._value.slice(this._cursorIdx);
           this._cursorIdx += key.name.length;
           this.yogaNode.markDirty();
           this._onChange?.(this._value);
@@ -158,7 +170,10 @@ export class TextArea extends Renderable {
     this.physicalCursorX = -1;
     this.physicalCursorY = -1;
 
-    const display = this._value.slice(0, this._cursorIdx) + this._composingText + this._value.slice(this._cursorIdx);
+    const display =
+      this._value.slice(0, this._cursorIdx) +
+      this._composingText +
+      this._value.slice(this._cursorIdx);
     const cursorOffset = this._cursorIdx + this._composingText.length;
 
     if (!this.focused && display.length === 0 && this._placeholder) {
@@ -189,7 +204,8 @@ export class TextArea extends Renderable {
           this.physicalCursorY = y + row;
         }
 
-        const isComposing = charIdx >= this._cursorIdx && charIdx < this._cursorIdx + this._composingText.length;
+        const isComposing =
+          charIdx >= this._cursorIdx && charIdx < this._cursorIdx + this._composingText.length;
         const style = isComposing ? StyleFlags.Underline | StyleFlags.Dim : 0;
 
         canvas.setCell(cx, y + row, ch, style, this._color, this._bgColor);

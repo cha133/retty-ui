@@ -1,24 +1,22 @@
 // tests/react.test.tsx — React 19 hostConfig regression tests.
 
-import { describe, test, expect } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import * as React from "react";
 import { act } from "react";
-
-import {
-  Box as BoxComp,
-  Text as TextComp,
-  TextArea as TextAreaComp,
-  ScrollBox as ScrollBoxComp,
-} from "../src/react/components.tsx";
-import { reconciler, createReactRoot } from "../src/react/reconciler.ts";
-import type { Container } from "../src/react/types.ts";
 import { Box } from "../src/components/box.ts";
+import { ScrollBox } from "../src/components/scrollbox.ts";
 import { Text } from "../src/components/text.ts";
 import { TextArea } from "../src/components/textarea.ts";
-import { ScrollBox } from "../src/components/scrollbox.ts";
-import { inputManager } from "../src/core/input.ts";
 import { renderHeadless } from "../src/core/headless.ts";
-import { Direction } from "../src/core/yoga.ts";
+import { inputManager } from "../src/core/input.ts";
+import {
+  Box as BoxComp,
+  ScrollBox as ScrollBoxComp,
+  TextArea as TextAreaComp,
+  Text as TextComp,
+} from "../src/react/components.tsx";
+import { createReactRoot, reconciler } from "../src/react/reconciler.ts";
+import type { Container } from "../src/react/types.ts";
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -131,10 +129,7 @@ describe("React 19 hostConfig", () => {
       captured = r;
     };
     const rootBox = new Box({ style: { width: 80, height: 24 } });
-    const fiber = mount(
-      <BoxComp ref={refSetter} style={{ width: 10, height: 5 }} />,
-      rootBox,
-    );
+    const fiber = mount(<BoxComp ref={refSetter} style={{ width: 10, height: 5 }} />, rootBox);
     // Verify the props landed on the instance's Renderable.style.
     expect(captured!.style.width).toBe(10);
     expect(captured!.style.height).toBe(5);
@@ -159,7 +154,7 @@ describe("React 19 hostConfig", () => {
     const rootBox = new Box({});
     const fiber = mount(<App />, rootBox);
     // _testHandleData is exposed via the module's exported helpers.
-    const testHandleData = (_testHandleData as unknown as (data: string) => void);
+    const testHandleData = _testHandleData as unknown as (data: string) => void;
     testHandleData("a");
     expect(count).toBe(2);
     update(null, fiber);

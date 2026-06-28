@@ -17,7 +17,7 @@ export type StyleFlag = number;
 export const COLOR_DEFAULT = 0x01000000;
 
 export function rgb(r: number, g: number, b: number): number {
-  return ((r & 0xff) << 16) | ((g & 0xff) << 8) | ((b & 0xff) & 0xff);
+  return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff & 0xff);
 }
 
 export function parseColor(input: string | number | undefined): number {

@@ -10,18 +10,16 @@
 // All React 19 protocol methods are present. Anything not used by our TUI
 // (Suspense, Form, Scope, Transitions) is a no-op stub.
 
-import type { HostConfig } from "react-reconciler";
 import { createContext } from "react";
-import type { ReactContext } from "react-reconciler";
-import { NoEventPriority, DefaultEventPriority } from "react-reconciler/constants";
-
-import type { Container, Instance, Props, PublicInstance, TextInstance, Type } from "./types.ts";
+import type { HostConfig, ReactContext } from "react-reconciler";
+import { DefaultEventPriority, NoEventPriority } from "react-reconciler/constants";
 import { Box } from "../components/box.ts";
+import { ScrollBox } from "../components/scrollbox.ts";
 import { Text } from "../components/text.ts";
 import { TextArea } from "../components/textarea.ts";
-import { ScrollBox } from "../components/scrollbox.ts";
-import { setInitialProperties, updateProperties } from "./utils.ts";
 import type { Renderable } from "../core/renderable.ts";
+import type { Container, Instance, Props, PublicInstance, TextInstance, Type } from "./types.ts";
+import { setInitialProperties, updateProperties } from "./utils.ts";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Update priority — module-level (one renderer, no concurrent roots competing).

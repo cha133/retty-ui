@@ -7,8 +7,15 @@
 // `useEffectEvent()` is the opentui polyfill for React 19's stable-handler
 // pattern (line refs + useLayoutEffect sync).
 
-import { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { createContext } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 import { inputManager, type KeyEvent, type MouseEvent } from "../core/input.ts";
 import type { Renderable } from "../core/renderable.ts";

@@ -28,7 +28,12 @@
     "test:render": "bun test tests/render.test.ts",
     "typecheck": "tsc --noEmit",
     "example:imperative": "bun run examples/agent-imperative.ts",
-    "example:react": "bun run examples/agent-react.tsx"
+    "example:react": "bun run examples/agent-react.tsx",
+    "lint": "biome check",
+    "lint:fix": "biome check --write --unsafe",
+    "format": "biome format --write",
+    "check": "biome check --write --unsafe",
+    "ci": "biome ci"
   },
   "dependencies": {
     "yoga-layout-tui": "file:../yoga-layout-tui"
@@ -38,10 +43,15 @@
     "react-reconciler": "^0.33.0"
   },
   "peerDependenciesMeta": {
-    "react": { "optional": false },
-    "react-reconciler": { "optional": false }
+    "react": {
+      "optional": false
+    },
+    "react-reconciler": {
+      "optional": false
+    }
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.1",
     "@types/bun": "latest",
     "@types/react": "^19.2.0",
     "@types/react-reconciler": "^0.33.0",

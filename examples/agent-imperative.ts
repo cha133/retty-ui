@@ -12,8 +12,8 @@
 //   │  $ <TextArea>                     │
 //   └───────────────────────────────────┘
 
+import { Box, ScrollBox, Text, TextArea } from "../src/components/index.ts";
 import { Renderer, rgb } from "../src/index.ts";
-import { Box, Text, TextArea, ScrollBox } from "../src/components/index.ts";
 
 const renderer = new Renderer({ alternate: true, mouse: false });
 

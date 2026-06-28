@@ -34,38 +34,37 @@
 //   Our text/TextArea components do this on every value setter.
 
 import {
-  Node as YogaNode,
-  Direction,
-  FlexDirection,
-  Justify,
   Align,
-  PositionType,
+  Direction,
   Display,
-  Overflow,
   PhysicalEdge as Edge,
-  MeasureMode,
+  FlexDirection,
   Gutter,
+  Justify,
   type MeasureFunction,
+  MeasureMode,
+  Overflow,
+  PositionType,
+  Node as YogaNode,
 } from "yoga-layout-tui";
 
 // re-exports (keep names matching v0.2 for the rest of src/core/* to read
 // naturally).
-export {
-  YogaNode as Node,
-  Direction,
-  FlexDirection,
-  Justify,
-  Align,
-  PositionType,
-  Display,
-  Overflow,
-  Edge,
-  MeasureMode,
-  Gutter,
-  type MeasureFunction,
-};
-
 // v0.2 called this `Edge`; yoga-layout-tui renamed to `PhysicalEdge`
 // because the algorithm is LTR-only and the physical (left/top/right/
 // bottom) model is the only one that matters. Alias for muscle memory.
-export { Edge as PhysicalEdge };
+export {
+  Align,
+  Direction,
+  Display,
+  Edge,
+  Edge as PhysicalEdge,
+  FlexDirection,
+  Gutter,
+  Justify,
+  type MeasureFunction,
+  MeasureMode,
+  Overflow,
+  PositionType,
+  YogaNode as Node,
+};

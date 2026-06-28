@@ -35,3 +35,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # local working notes / Claude Code workspace (mirrors v0.2 .agents/ pattern)
 .claude
+
+# Biome v2 cache
+.biome/

@@ -1,19 +1,25 @@
-import {
-  Node,
-  FlexDirection,
-  Display,
-  Justify,
-  Align,
-  PositionType,
-  Overflow,
-  Edge,
-  Gutter,
-} from "./yoga.ts";
 import type { Canvas } from "./canvas.ts";
 import type { KeyEvent } from "./input.ts";
+import {
+  Align,
+  Display,
+  Edge,
+  FlexDirection,
+  Gutter,
+  Justify,
+  Node,
+  Overflow,
+  PositionType,
+} from "./yoga.ts";
 
 export type FlexDirectionString = "row" | "column" | "row-reverse" | "column-reverse";
-export type JustifyString = "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+export type JustifyString =
+  | "flex-start"
+  | "center"
+  | "flex-end"
+  | "space-between"
+  | "space-around"
+  | "space-evenly";
 export type AlignString = "flex-start" | "center" | "flex-end" | "stretch";
 export type OverflowString = "visible" | "hidden" | "scroll";
 export type PositionTypeString = "static" | "relative" | "absolute";
@@ -114,12 +120,21 @@ const POSITION_MAP: Record<PositionTypeString, PositionType> = {
   absolute: PositionType.Absolute,
 };
 
-function applyDimension(node: Node, value: DimensionValue | undefined, set: (n: Node, v: number | "auto") => void): void {
+function applyDimension(
+  node: Node,
+  value: DimensionValue | undefined,
+  set: (n: Node, v: number | "auto") => void,
+): void {
   if (value === undefined) return;
   set(node, value);
 }
 
-function applyEdgeValue(node: Node, value: EdgeValue | undefined, edge: Edge, set: (n: Node, e: Edge, v: number | "auto") => void): void {
+function applyEdgeValue(
+  node: Node,
+  value: EdgeValue | undefined,
+  edge: Edge,
+  set: (n: Node, e: Edge, v: number | "auto") => void,
+): void {
   if (value === undefined) return;
   set(node, edge, value);
 }
@@ -215,7 +230,7 @@ export abstract class Renderable {
   private _style: LayoutStyle;
   readonly id: string;
 
-  handleKeyPress?: (key: KeyEvent) => boolean | void;
+  handleKeyPress?: (key: KeyEvent) => boolean | undefined;
   handlePaste?: (event: PasteEvent) => void;
 
   renderAfter?: (canvas: Canvas, x: number, y: number, w: number, h: number) => void;

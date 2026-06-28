@@ -158,10 +158,14 @@ class InputManager {
     }
   };
 
-  private tryDecodeMouse(str: string, offset: number): { event: MouseEvent; length: number } | null {
+  private tryDecodeMouse(
+    str: string,
+    offset: number,
+  ): { event: MouseEvent; length: number } | null {
     if (str[offset] !== "\x1b" || str[offset + 1] !== "[" || str[offset + 2] !== "<") {
       return null;
     }
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: parsing ANSI mouse SGR escape sequence (ESC + `[<...M/m`)
     const match = str.slice(offset).match(/^\x1b\[<(\d+);(\d+);(\d+)([Mm])/);
     if (!match) return null;
 
@@ -190,80 +194,196 @@ class InputManager {
 
     if (code >= 1 && code <= 26 && code !== 9 && code !== 10 && code !== 13) {
       return {
-        key: { name: String.fromCharCode(code + 96), ctrl: true, meta: false, shift: false, sequence: "" },
+        key: {
+          name: String.fromCharCode(code + 96),
+          ctrl: true,
+          meta: false,
+          shift: false,
+          sequence: "",
+        },
         length: 1,
       };
     }
 
     if (char === "\x1b") {
       if (offset + 1 >= str.length) {
-        return { key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
+        return {
+          key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" },
+          length: 1,
+        };
       }
       const next = str[offset + 1]!;
       if (next === "\r" || next === "\n") {
-        return { key: { name: "return", ctrl: false, meta: true, shift: false, sequence: "" }, length: 2 };
+        return {
+          key: { name: "return", ctrl: false, meta: true, shift: false, sequence: "" },
+          length: 2,
+        };
       }
       if (next !== "[" && next !== "O") {
         return {
-          key: { name: next.toLowerCase(), ctrl: false, meta: true, shift: next === next.toUpperCase() && next.toLowerCase() !== next.toUpperCase(), sequence: "" },
+          key: {
+            name: next.toLowerCase(),
+            ctrl: false,
+            meta: true,
+            shift: next === next.toUpperCase() && next.toLowerCase() !== next.toUpperCase(),
+            sequence: "",
+          },
           length: 2,
         };
       }
       if (offset + 2 >= str.length) {
-        return { key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
+        return {
+          key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" },
+          length: 1,
+        };
       }
       const third = str[offset + 2]!;
       if (next === "[") {
+        // biome-ignore lint/suspicious/noControlCharactersInRegex: parsing ANSI modifyOtherKeys escape (ESC + `[27;...~`)
         const modifyMatch = str.slice(offset).match(/^\x1b\[27;(\d+);(\d+)~/);
-        if (modifyMatch && modifyMatch[1] && modifyMatch[2]) {
-          const mod = parseInt(modifyMatch[1]);
-          const keyCode = parseInt(modifyMatch[2]);
+        if (modifyMatch?.[1] && modifyMatch[2]) {
+          const mod = parseInt(modifyMatch[1], 10);
+          const keyCode = parseInt(modifyMatch[2], 10);
           const shift = ((mod - 1) & 1) !== 0;
           const meta = ((mod - 1) & 2) !== 0;
           const ctrl = ((mod - 1) & 4) !== 0;
           if (keyCode === 13) {
-            return { key: { name: "return", ctrl, meta, shift, sequence: "" }, length: modifyMatch[0].length };
+            return {
+              key: { name: "return", ctrl, meta, shift, sequence: "" },
+              length: modifyMatch[0].length,
+            };
           }
         }
 
-        if (third === "A") return { key: { name: "up", ctrl: false, meta: false, shift: false, sequence: "" }, length: 3 };
-        if (third === "B") return { key: { name: "down", ctrl: false, meta: false, shift: false, sequence: "" }, length: 3 };
-        if (third === "C") return { key: { name: "right", ctrl: false, meta: false, shift: false, sequence: "" }, length: 3 };
-        if (third === "D") return { key: { name: "left", ctrl: false, meta: false, shift: false, sequence: "" }, length: 3 };
+        if (third === "A")
+          return {
+            key: { name: "up", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 3,
+          };
+        if (third === "B")
+          return {
+            key: { name: "down", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 3,
+          };
+        if (third === "C")
+          return {
+            key: { name: "right", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 3,
+          };
+        if (third === "D")
+          return {
+            key: { name: "left", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 3,
+          };
 
+        // biome-ignore lint/suspicious/noControlCharactersInRegex: parsing ANSI arrow-key modifier escape (ESC + `[1;<mod><letter>`)
         const modMatch = str.slice(offset).match(/^\x1b\[1;([2345678])([ABCDEFGH])/);
-        if (modMatch && modMatch[1] && modMatch[2]) {
-          const mod = parseInt(modMatch[1]);
+        if (modMatch?.[1] && modMatch[2]) {
+          const mod = parseInt(modMatch[1], 10);
           const letter = modMatch[2];
           const shift = ((mod - 1) & 1) !== 0;
           const meta = ((mod - 1) & 2) !== 0;
           const ctrl = ((mod - 1) & 4) !== 0;
-          const names: Record<string, string> = { A: "up", B: "down", C: "right", D: "left", H: "home", F: "end" };
-          return { key: { name: names[letter] ?? "escape", ctrl, meta, shift, sequence: "" }, length: modMatch[0].length };
+          const names: Record<string, string> = {
+            A: "up",
+            B: "down",
+            C: "right",
+            D: "left",
+            H: "home",
+            F: "end",
+          };
+          return {
+            key: { name: names[letter] ?? "escape", ctrl, meta, shift, sequence: "" },
+            length: modMatch[0].length,
+          };
         }
 
-        if (third === "3" && str[offset + 3] === "~") return { key: { name: "delete", ctrl: false, meta: false, shift: false, sequence: "" }, length: 4 };
-        if (third === "5" && str[offset + 3] === "~") return { key: { name: "pageup", ctrl: false, meta: false, shift: false, sequence: "" }, length: 4 };
-        if (third === "6" && str[offset + 3] === "~") return { key: { name: "pagedown", ctrl: false, meta: false, shift: false, sequence: "" }, length: 4 };
-        if (third === "H" || (third === "1" && str[offset + 3] === "~")) return { key: { name: "home", ctrl: false, meta: false, shift: false, sequence: "" }, length: third === "H" ? 3 : 4 };
-        if (third === "F" || (third === "4" && str[offset + 3] === "~")) return { key: { name: "end", ctrl: false, meta: false, shift: false, sequence: "" }, length: third === "F" ? 3 : 4 };
+        if (third === "3" && str[offset + 3] === "~")
+          return {
+            key: { name: "delete", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 4,
+          };
+        if (third === "5" && str[offset + 3] === "~")
+          return {
+            key: { name: "pageup", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 4,
+          };
+        if (third === "6" && str[offset + 3] === "~")
+          return {
+            key: { name: "pagedown", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: 4,
+          };
+        if (third === "H" || (third === "1" && str[offset + 3] === "~"))
+          return {
+            key: { name: "home", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: third === "H" ? 3 : 4,
+          };
+        if (third === "F" || (third === "4" && str[offset + 3] === "~"))
+          return {
+            key: { name: "end", ctrl: false, meta: false, shift: false, sequence: "" },
+            length: third === "F" ? 3 : 4,
+          };
 
+        // biome-ignore lint/suspicious/noControlCharactersInRegex: parsing ANSI F1-F20 function-key escape (ESC + `[15~`..`[24~`)
         const fnMatch = str.slice(offset).match(/^\x1b\[(1[5-9]|2[0-4])~/);
-        if (fnMatch && fnMatch[1]) {
-          const fnMap: Record<string, number> = { "15": 5, "17": 6, "18": 7, "19": 8, "20": 9, "21": 10, "23": 11, "24": 12 };
-          return { key: { name: `f${fnMap[fnMatch[1]] ?? parseInt(fnMatch[1], 10)}`, ctrl: false, meta: false, shift: false, sequence: "" }, length: fnMatch[0].length };
+        if (fnMatch?.[1]) {
+          const fnMap: Record<string, number> = {
+            "15": 5,
+            "17": 6,
+            "18": 7,
+            "19": 8,
+            "20": 9,
+            "21": 10,
+            "23": 11,
+            "24": 12,
+          };
+          return {
+            key: {
+              name: `f${fnMap[fnMatch[1]] ?? parseInt(fnMatch[1], 10)}`,
+              ctrl: false,
+              meta: false,
+              shift: false,
+              sequence: "",
+            },
+            length: fnMatch[0].length,
+          };
         }
       }
-      return { key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
+      return {
+        key: { name: "escape", ctrl: false, meta: false, shift: false, sequence: "" },
+        length: 1,
+      };
     }
 
-    if (char === "\r") return { key: { name: "return", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
-    if (char === "\n") return { key: { name: "return", ctrl: true, meta: false, shift: false, sequence: "" }, length: 1 };
-    if (char === "\t") return { key: { name: "tab", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
-    if (char === "\x7f" || char === "\x08") return { key: { name: "backspace", ctrl: false, meta: false, shift: false, sequence: "" }, length: 1 };
+    if (char === "\r")
+      return {
+        key: { name: "return", ctrl: false, meta: false, shift: false, sequence: "" },
+        length: 1,
+      };
+    if (char === "\n")
+      return {
+        key: { name: "return", ctrl: true, meta: false, shift: false, sequence: "" },
+        length: 1,
+      };
+    if (char === "\t")
+      return {
+        key: { name: "tab", ctrl: false, meta: false, shift: false, sequence: "" },
+        length: 1,
+      };
+    if (char === "\x7f" || char === "\x08")
+      return {
+        key: { name: "backspace", ctrl: false, meta: false, shift: false, sequence: "" },
+        length: 1,
+      };
 
     return {
-      key: { name: char, ctrl: false, meta: false, shift: char === char.toUpperCase() && char.toLowerCase() !== char.toUpperCase(), sequence: "" },
+      key: {
+        name: char,
+        ctrl: false,
+        meta: false,
+        shift: char === char.toUpperCase() && char.toLowerCase() !== char.toUpperCase(),
+        sequence: "",
+      },
       length: 1,
     };
   }
@@ -272,11 +392,22 @@ class InputManager {
 export const inputManager = new InputManager();
 
 export function _testDecodeKey(str: string, offset = 0): { key: KeyEvent; length: number } {
-  return (inputManager as unknown as { decodeKey: (s: string, o: number) => { key: KeyEvent; length: number } }).decodeKey(str, offset);
+  return (
+    inputManager as unknown as {
+      decodeKey: (s: string, o: number) => { key: KeyEvent; length: number };
+    }
+  ).decodeKey(str, offset);
 }
 
-export function _testDecodeMouse(str: string, offset = 0): { event: MouseEvent; length: number } | null {
-  return (inputManager as unknown as { tryDecodeMouse: (s: string, o: number) => { event: MouseEvent; length: number } | null }).tryDecodeMouse(str, offset);
+export function _testDecodeMouse(
+  str: string,
+  offset = 0,
+): { event: MouseEvent; length: number } | null {
+  return (
+    inputManager as unknown as {
+      tryDecodeMouse: (s: string, o: number) => { event: MouseEvent; length: number } | null;
+    }
+  ).tryDecodeMouse(str, offset);
 }
 
 export function _testFeedPaste(text: string): void {

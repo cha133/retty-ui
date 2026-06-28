@@ -6,11 +6,7 @@ export interface LayoutTextResult {
   height: number;
 }
 
-export function layoutText(
-  text: string,
-  maxWidth: number,
-  shouldWrap: boolean,
-): LayoutTextResult {
+export function layoutText(text: string, maxWidth: number, shouldWrap: boolean): LayoutTextResult {
   if (!text) {
     return { lines: [""], width: 0, height: 1 };
   }

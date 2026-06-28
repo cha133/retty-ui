@@ -1,17 +1,32 @@
-import { Renderable, type RenderableOptions, type LayoutStyle } from "../core/renderable.ts";
-import { Box, type BoxOptions } from "./box.ts";
 import type { Canvas } from "../core/canvas.ts";
 import type { KeyEvent } from "../core/input.ts";
+import { type LayoutStyle, Renderable, type RenderableOptions } from "../core/renderable.ts";
+import { Box, type BoxOptions } from "./box.ts";
 
 export interface ScrollboxOptions extends RenderableOptions {
   onScroll?: (offset: number) => void;
 }
 
-type PaddingOnly = "padding" | "paddingX" | "paddingY" | "paddingTop" | "paddingRight" | "paddingBottom" | "paddingLeft";
+type PaddingOnly =
+  | "padding"
+  | "paddingX"
+  | "paddingY"
+  | "paddingTop"
+  | "paddingRight"
+  | "paddingBottom"
+  | "paddingLeft";
 
 function splitPadding(style?: LayoutStyle): { paddingStyle: LayoutStyle; rest: LayoutStyle } {
   if (!style) return { paddingStyle: {}, rest: {} };
-  const paddingKeys: PaddingOnly[] = ["padding", "paddingX", "paddingY", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft"];
+  const paddingKeys: PaddingOnly[] = [
+    "padding",
+    "paddingX",
+    "paddingY",
+    "paddingTop",
+    "paddingRight",
+    "paddingBottom",
+    "paddingLeft",
+  ];
   const paddingStyle: LayoutStyle = {};
   const rest: LayoutStyle = { ...style };
   for (const k of paddingKeys) {
