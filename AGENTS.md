@@ -34,14 +34,14 @@ bun run example:react      # examples/agent-react.tsx
 
 Three layers, bottom-up:
 
-1. **`yoga-layout-tui`** — sibling package at `C:\Dev\yoga-layout-tui` (currently `file:../yoga-layout-tui`). Pure-TS flexbox, drop-in for the original `yoga-layout` npm API. See `C:\Dev\yoga-layout-tui\.claude\95-retty-ui-v0.3-integration.md` for our integration notes.
+1. **`yoga-layout-tui`** — npm package `^0.2.0`. Pure-TS flexbox, drop-in for the original `yoga-layout` npm API. Source for reference: `C:\Dev\yoga-layout-tui\` (sibling project). See `C:\Dev\yoga-layout-tui\.claude\95-retty-ui-v0.3-integration.md` for our integration notes + 4 hot-patches that shipped in 0.2.0.
 2. **`src/core/`** — imperative UI. `Renderable` base class (yoga node binding + dirty/focus/add/measure), `Renderer` (double-buffer diff + flush + alternate screen + autoFocus), `Canvas` (Uint32Array cells + ANSI), `Screen` (TTY escape sequences), `input.ts` (raw mode + key/mouse/paste decode), `text-layout.ts` (soft-wrap), `headless.ts` (`renderHeadless()` for tests).
 3. **`src/components/`** — `Box` (flexbox container + 4 border styles + SGR flags + bg color), `Text` (single/multi-line), `TextArea` (IME composing + cursor + placeholder + onSubmit), `ScrollBox` (viewport + content + scrollBy/scrollTo/scrollToBottom).
 4. **`src/react/`** — React 19 binding. `host-config.ts` (~200 lines, 60 methods, mutation mode), `reconciler.ts` (single ReactReconciler instance + ConcurrentRoot), `components.tsx` (PascalCase function components emitting lowercase hostConfig tags via `React.createElement`), `hooks.ts` (useApp / useInput / useMouse / usePaste / useFocus / useEffectEvent).
 
 ## Critical gotchas
 
-- **`yoga-layout-tui` is a sibling dependency, not an npm dep.** `package.json` currently has `"yoga-layout-tui": "file:../yoga-layout-tui"`. Until the sibling package is published to npm, you can't `bun publish` this package — `npm install` will fail. Plan: switch to `^x.y.z` once `yoga-layout-tui` ships.
+- **`yoga-layout-tui` is an npm dep, not a sibling.** `package.json` has `"yoga-layout-tui": "^0.2.0"`. The 4 hot-patches from `C:\Dev\yoga-layout-tui\.claude\95-retty-ui-v0.3-integration.md` were shipped in `yoga-layout-tui@0.2.0` — if layout behavior regresses, check what shipped between 0.2.0 and current upstream before re-patching locally.
 - **The 4 hot-patches live in `yoga-layout-tui`, not here.** If you change layout behavior and it regresses, check `C:\Dev\yoga-layout-tui\.claude\95-retty-ui-v0.3-integration.md` for the patch list (safeResolve / lineMainSize / STEP 9 fallback / childAbsX padding). Some patches may already be committed upstream — check git log first before re-patching.
 - **`tsconfig.json` ships with `noEmit: true` and `module: Preserve`.** We publish source `.ts` directly; consumers must use a TS-aware bundler (Bun, tsx, Vite, esbuild) or run via `bun`. No `dist/` step.
 - **`verbatimModuleSyntax` is on.** Use `import type` for type-only imports. Biome has `useImportType`/`useExportType` disabled to match.
@@ -72,10 +72,9 @@ Three layers, bottom-up:
 
 ## Publishing
 
-This package is pre-release. To publish to npm:
+Ready to publish. Steps:
 
-1. Wait for `C:\Dev\yoga-layout-tui` to ship to npm.
-2. Switch `"yoga-layout-tui": "file:../yoga-layout-tui"` → `"yoga-layout-tui": "^x.y.z"` in `package.json`.
-3. `bun run check` → `bun test` → `bun run typecheck` → `bun run lint` — all 0 errors.
-4. `bun pm pack --dry-run` — verify tarball contains only `src/`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `LICENSE`, `package.json`.
-5. `bun publish`.
+1. `bun install` (uses `yoga-layout-tui@^0.2.0` from npm — no more `file:` protocol)
+2. `bun run typecheck` → `bun run lint` → `bun test` — all 0 errors.
+3. `bun pm pack --dry-run` — verify tarball contains only `src/`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `LICENSE`, `package.json`.
+4. `bun publish`.

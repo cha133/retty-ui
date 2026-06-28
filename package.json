@@ -68,7 +68,7 @@
     "ci": "biome ci"
   },
   "dependencies": {
-    "yoga-layout-tui": "file:../yoga-layout-tui"
+    "yoga-layout-tui": "^0.2.0"
   },
   "peerDependencies": {
     "react": "^19.2.0",
