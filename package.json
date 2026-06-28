@@ -1,9 +1,30 @@
 {
   "name": "retty-ui",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Imperative TUI core + React 19 bindings. Pure TypeScript, zero native dependencies.",
-  "module": "./src/index.ts",
+  "license": "MIT",
+  "author": "cha133",
+  "keywords": [
+    "tui",
+    "terminal",
+    "react",
+    "yoga",
+    "flexbox",
+    "bun",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cha133/retty-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cha133/retty-ui/issues"
+  },
+  "homepage": "https://github.com/cha133/retty-ui#readme",
   "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "module": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -22,9 +43,20 @@
       "import": "./src/react/jsx-dev-runtime.ts"
     }
   },
+  "files": [
+    "src",
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "test": "bun test",
-    "test:yoga": "bun test tests/yoga.test.ts",
     "test:render": "bun test tests/render.test.ts",
     "typecheck": "tsc --noEmit",
     "example:imperative": "bun run examples/agent-imperative.ts",
