@@ -313,6 +313,6 @@ export const hostConfig: HostConfig<
   // @types/react-reconciler@0.33; same pattern as maySuspendCommitOnUpdate.
   ...({
     rendererPackageName: "retty-ui",
-    rendererVersion: "0.3.0",
+    rendererVersion: "0.3.1",
   } as unknown as Record<string, unknown>),
 };

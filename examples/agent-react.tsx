@@ -73,7 +73,7 @@ function App() {
         borderColor="#3b8eea"
       >
         <Text text="Retty TUI " color="#3b8eea" bold />
-        <Text text="v0.3.0 (react)" color="#787878" dim />
+        <Text text="v0.3.1 (react)" color="#787878" dim />
       </Box>
 
       <Box

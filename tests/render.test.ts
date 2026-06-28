@@ -12,7 +12,7 @@ function buildAgentTree() {
     borderColor: rgb(59, 142, 234),
   });
   header.add(new Text("Retty TUI ", { color: rgb(59, 142, 234), bold: true }));
-  header.add(new Text("v0.3.0", { color: rgb(120, 120, 120), dim: true }));
+  header.add(new Text("v0.3.1", { color: rgb(120, 120, 120), dim: true }));
   root.add(header);
 
   const logsBox = new Box({

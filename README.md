@@ -2,7 +2,7 @@
 
 > Imperative TUI core + React 19 bindings. Pure TypeScript, zero native dependencies.
 
-**Status: v0.3.0 in development.** Imperative core is being ported from v0.2 (Zig FFI) to v0.3 (pure-TS `yoga-layout-tui`), with a new React 19 reconciler on top.
+**Status: v0.3.1 in development.** Imperative core is being ported from v0.2 (Zig FFI) to v0.3 (pure-TS `yoga-layout-tui`), with a new React 19 reconciler on top.
 
 See [`.claude/00-index.md`](.claude/00-index.md) and [`.claude/01-state.md`](.claude/01-state.md) for the current roadmap and progress (local working notes; not in git).
 

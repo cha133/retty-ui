@@ -1,6 +1,6 @@
 {
   "name": "retty-ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Imperative TUI core + React 19 bindings. Pure TypeScript, zero native dependencies.",
   "module": "./src/index.ts",
   "type": "module",
