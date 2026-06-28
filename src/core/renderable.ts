@@ -285,11 +285,12 @@ export abstract class Renderable {
   focus(): void {
     if (this._focused || !this._focusable) return;
     const r = this.renderer;
-    if (!r) return;
-    const prev = r.getFocusedRenderable();
-    if (prev && prev !== this) prev.blur();
+    if (r) {
+      const prev = r.getFocusedRenderable();
+      if (prev && prev !== this) prev.blur();
+    }
     this._focused = true;
-    r.setFocusedRenderable(this);
+    r?.setFocusedRenderable(this);
     this.requestRender();
   }
 

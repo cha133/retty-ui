@@ -31,7 +31,7 @@
 //   only. If a measure function's output changes for the SAME input,
 //   the cache still returns the stale output. **Callers must call
 //   `yogaNode.markDirty()` whenever the measure source data changes.**
-//   Our text/textarea components do this on every value setter.
+//   Our text/TextArea components do this on every value setter.
 
 import {
   Node as YogaNode,

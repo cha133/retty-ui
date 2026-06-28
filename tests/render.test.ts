@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { Box, Text, Textarea, Scrollbox } from "../src/components/index.ts";
+import { Box, Text, TextArea, ScrollBox } from "../src/components/index.ts";
 import { renderHeadless } from "../src/core/headless.ts";
 import { rgb } from "../src/core/canvas.ts";
 
@@ -22,7 +22,7 @@ function buildAgentTree() {
   });
   logsBox.add(new Text("--- Agent History Logs ---", { color: rgb(120, 120, 120), dim: true }));
 
-  const scrollbox = new Scrollbox({ style: { flexGrow: 1 } });
+  const scrollbox = new ScrollBox({ style: { flexGrow: 1 } });
   for (let i = 1; i <= 30; i++) {
     scrollbox.add(new Text(`[User]: line ${i}`, { color: rgb(180, 180, 180) }));
   }
@@ -35,7 +35,7 @@ function buildAgentTree() {
     borderColor: rgb(0, 200, 100),
   });
   inputPanel.add(new Text("$ ", { color: rgb(0, 200, 100), bold: true }));
-  inputPanel.add(new Textarea({ value: "", placeholder: "Type...", style: { flexGrow: 1 } }));
+  inputPanel.add(new TextArea({ value: "", placeholder: "Type...", style: { flexGrow: 1 } }));
   root.add(inputPanel);
 
   return { root, header, logsBox, scrollbox, inputPanel };
@@ -67,7 +67,7 @@ test("logs box fills space between header and input panel", () => {
   expect(logsBox.computedHeight).toBe(18);
 });
 
-test("scrollbox shows first lines at top, border not covered", () => {
+test("ScrollBox shows first lines at top, border not covered", () => {
   const { root, logsBox } = buildAgentTree();
   const { canvas } = renderHeadless(root, 80, 24);
 
@@ -79,9 +79,9 @@ test("scrollbox shows first lines at top, border not covered", () => {
   expect(contentRow.includes("[User]: line 1")).toBe(true);
 });
 
-test("textarea wraps to 2 rows when value exceeds width", () => {
+test("TextArea wraps to 2 rows when value exceeds width", () => {
   const root = new Box({ style: { flexDirection: "column", height: 10, width: 40 } });
-  const ta = new Textarea({
+  const ta = new TextArea({
     value: "a".repeat(60),
     style: { flexGrow: 1 },
   });
@@ -93,7 +93,7 @@ test("textarea wraps to 2 rows when value exceeds width", () => {
 
 test("measure/render consistency: computed height matches rendered rows", () => {
   const root = new Box({ style: { flexDirection: "column", width: 30 } });
-  const ta = new Textarea({
+  const ta = new TextArea({
     value: "a".repeat(50),
     style: {},
   });
@@ -108,9 +108,9 @@ test("measure/render consistency: computed height matches rendered rows", () => 
   expect(nonEmptyRows).toBe(ta.computedHeight);
 });
 
-test("逐字符输入后 textarea grow（无 measure cache 锁死）", () => {
+test("逐字符输入后 TextArea grow（无 measure cache 锁死）", () => {
   const root = new Box({ style: { flexDirection: "column", height: 10, width: 30 } });
-  const ta = new Textarea({ value: "", style: { flexGrow: 1 } });
+  const ta = new TextArea({ value: "", style: { flexGrow: 1 } });
   root.add(ta);
 
   for (let i = 0; i < 40; i++) {
@@ -122,7 +122,7 @@ test("逐字符输入后 textarea grow（无 measure cache 锁死）", () => {
 
 test("placeholder shows when unfocused and empty", () => {
   const root = new Box({ style: { width: 40, height: 3 } });
-  const ta = new Textarea({
+  const ta = new TextArea({
     value: "",
     placeholder: "Type here...",
     style: { flexGrow: 1 },
@@ -135,7 +135,7 @@ test("placeholder shows when unfocused and empty", () => {
 
 test("placeholder hidden when focused and has value", () => {
   const root = new Box({ style: { width: 40, height: 3 } });
-  const ta = new Textarea({
+  const ta = new TextArea({
     value: "hello",
     placeholder: "Type here...",
     style: { flexGrow: 1 },
@@ -177,7 +177,7 @@ test("flexGrow fills remainder", () => {
   expect(flex.computedHeight).toBe(7);
 });
 
-test("scrollbox scrollBy reveals later lines", () => {
+test("ScrollBox scrollBy reveals later lines", () => {
   const { root, scrollbox } = buildAgentTree();
   renderHeadless(root, 80, 24);
   scrollbox.scrollBy(3);
@@ -189,7 +189,7 @@ test("scrollbox scrollBy reveals later lines", () => {
   expect(contentRow.includes("line 1")).toBe(false);
 });
 
-test("scrollbox border still visible after scroll", () => {
+test("ScrollBox border still visible after scroll", () => {
   const { root, scrollbox } = buildAgentTree();
   renderHeadless(root, 80, 24);
   scrollbox.scrollBy(10);
@@ -201,11 +201,11 @@ test("scrollbox border still visible after scroll", () => {
   expect(lines[20]![79]).toBe("┘");
 });
 
-test("scrollbox scissor clips items outside viewport, leaving neighbors visible", () => {
+test("ScrollBox scissor clips items outside viewport, leaving neighbors visible", () => {
   const root = new Box({ style: { flexDirection: "column", width: 20, height: 10 } });
   const topBox = new Box({ style: { height: 2 } });
   topBox.add(new Text("TOP"));
-  const sb = new Scrollbox({ style: { height: 6 } });
+  const sb = new ScrollBox({ style: { height: 6 } });
   for (let i = 0; i < 10; i++) sb.add(new Text(`row${i}`));
   const bottomBox = new Box({ style: { height: 2 } });
   bottomBox.add(new Text("BOT"));
@@ -224,9 +224,9 @@ test("scrollbox scissor clips items outside viewport, leaving neighbors visible"
   expect(lines[8]!.includes("BOT")).toBe(true);
 });
 
-test("scrollbox scrollTo clamps to maxScrollOffset", () => {
+test("ScrollBox scrollTo clamps to maxScrollOffset", () => {
   const root = new Box({ style: { flexDirection: "column", width: 20, height: 10 } });
-  const sb = new Scrollbox({ style: { height: 6 } });
+  const sb = new ScrollBox({ style: { height: 6 } });
   for (let i = 0; i < 10; i++) sb.add(new Text(`row${i}`));
   root.add(sb);
   renderHeadless(root, 20, 10);
@@ -235,9 +235,9 @@ test("scrollbox scrollTo clamps to maxScrollOffset", () => {
   expect(sb.scrollOffset).toBe(4);
 });
 
-test("scrollbox scrollToBottom shows last rows at bottom of viewport", () => {
+test("ScrollBox scrollToBottom shows last rows at bottom of viewport", () => {
   const root = new Box({ style: { flexDirection: "column", width: 20, height: 10 } });
-  const sb = new Scrollbox({ style: { height: 6 } });
+  const sb = new ScrollBox({ style: { height: 6 } });
   for (let i = 0; i < 10; i++) sb.add(new Text(`row${i}`));
   root.add(sb);
   renderHeadless(root, 20, 10);
@@ -249,10 +249,10 @@ test("scrollbox scrollToBottom shows last rows at bottom of viewport", () => {
   expect(lines[5]!.includes("row9")).toBe(true);
 });
 
-test("textarea in scrollbox keeps consistent measured height across scrolls", () => {
+test("TextArea in ScrollBox keeps consistent measured height across scrolls", () => {
   const root = new Box({ style: { flexDirection: "column", width: 30, height: 12 } });
-  const sb = new Scrollbox({ style: { height: 4 } });
-  const tall = new Textarea({ value: "a".repeat(60), style: {} });
+  const sb = new ScrollBox({ style: { height: 4 } });
+  const tall = new TextArea({ value: "a".repeat(60), style: {} });
   sb.add(tall);
   root.add(sb);
   renderHeadless(root, 30, 12);

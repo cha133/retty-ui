@@ -23,7 +23,7 @@ function splitPadding(style?: LayoutStyle): { paddingStyle: LayoutStyle; rest: L
   return { paddingStyle, rest };
 }
 
-export class Scrollbox extends Box {
+export class ScrollBox extends Box {
   private viewport: Box;
   private content: Box;
   private _scrollOffset = 0;
@@ -77,6 +77,11 @@ export class Scrollbox extends Box {
 
   scrollBy(delta: number): void {
     this.scrollTo(this._scrollOffset + delta);
+  }
+
+  /** Public callback setter so React `onScroll` prop can rewire without `as any`. */
+  set onScroll(cb: ((offset: number) => void) | undefined) {
+    this._onScroll = cb;
   }
 
   scrollToBottom(): void {

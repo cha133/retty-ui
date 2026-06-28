@@ -7,13 +7,13 @@
 //   │ Title (bold blue)  v0.3.0 (dim)   │
 //   ├─ Logs Box (flex: 1) ──────────────┤
 //   │  --- Agent History Logs ---       │
-//   │  <Scrollbox>                      │
+//   │  <ScrollBox>                      │
 //   ├─ Input Panel (3 rows) ────────────┤
-//   │  $ <Textarea>                     │
+//   │  $ <TextArea>                     │
 //   └───────────────────────────────────┘
 
 import { Renderer, rgb } from "../src/index.ts";
-import { Box, Text, Textarea, Scrollbox } from "../src/components/index.ts";
+import { Box, Text, TextArea, ScrollBox } from "../src/components/index.ts";
 
 const renderer = new Renderer({ alternate: true, mouse: false });
 
@@ -36,7 +36,7 @@ const logsBox = new Box({
 const logsTitle = new Text("--- Agent History Logs ---", { color: rgb(120, 120, 120), dim: true });
 logsBox.add(logsTitle);
 
-const scrollbox = new Scrollbox({ style: { flexGrow: 1 } });
+const scrollbox = new ScrollBox({ style: { flexGrow: 1 } });
 for (let i = 1; i <= 30; i++) {
   scrollbox.add(new Text(`[User]: message line ${i}`, { color: rgb(180, 180, 180) }));
 }
@@ -49,13 +49,13 @@ const inputPanel = new Box({
   borderColor: rgb(0, 200, 100),
 });
 const prompt = new Text("$ ", { color: rgb(0, 200, 100), bold: true });
-const textarea = new Textarea({
+const textarea = new TextArea({
   value: "",
   placeholder: "Type a message... (Ctrl+C to exit)",
   placeholderColor: rgb(100, 100, 100),
   color: rgb(230, 230, 230),
   style: { flexGrow: 1 },
-  onSubmit: (value) => {
+  onSubmit: (value: string) => {
     scrollbox.add(new Text(`[You]: ${value}`, { color: rgb(100, 200, 255) }));
     textarea.value = "";
     textarea.focus();

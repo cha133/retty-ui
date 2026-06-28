@@ -15,7 +15,7 @@ export interface TextareaOptions extends RenderableOptions {
   onChange?: (value: string) => void;
 }
 
-export class Textarea extends Renderable {
+export class TextArea extends Renderable {
   private _value: string;
   private _composingText = "";
   private _cursorIdx = 0;
@@ -62,6 +62,16 @@ export class Textarea extends Renderable {
     if (this._cursorIdx > v.length) this._cursorIdx = v.length;
     this.yogaNode.markDirty();
     this.requestRender();
+  }
+
+  /** Public callback setter so React `onSubmit` prop can rewire without `as any`. */
+  set onSubmit(cb: ((value: string) => void) | undefined) {
+    this._onSubmit = cb;
+  }
+
+  /** Public callback setter so React `onChange` prop can rewire without `as any`. */
+  set onChange(cb: ((value: string) => void) | undefined) {
+    this._onChange = cb;
   }
 
   get cursorIdx(): number {

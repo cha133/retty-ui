@@ -21,7 +21,7 @@ function renderNodeHeadless(node: Renderable, canvas: Canvas, x: number, y: numb
   // parent (matches upstream Yoga C++ / Yoga JS WASM / Ink TS port / v0.2
   // Zig FFI). We accumulate the parent chain at recursion time.
   //
-  // `translateY` is a render-time visual offset (used by Scrollbox's
+  // `translateY` is a render-time visual offset (used by ScrollBox's
   // three-layer translation trick to scroll content without re-laying
   // out). It is NOT in the yoga position, so we add it here at every
   // level — recursion's y accumulation naturally composes the parent

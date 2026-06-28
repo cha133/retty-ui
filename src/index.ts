@@ -1,7 +1,7 @@
 // src/index.ts — public command-style API.
 //
 // Usage:
-//   import { Renderer, Box, Text, Textarea, Scrollbox, Scrollback, rgb } from "retty-ui";
+//   import { Renderer, Box, Text, TextArea, ScrollBox, rgb } from "retty-ui";
 //   const renderer = new Renderer({ alternate: true });
 //   const root = new Box({ style: { ... } });
 //   renderer.mount(root);
