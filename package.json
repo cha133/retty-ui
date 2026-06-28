@@ -1,0 +1,52 @@
+{
+  "name": "retty-ui",
+  "version": "0.3.0",
+  "description": "Imperative TUI core + React 19 bindings. Pure TypeScript, zero native dependencies.",
+  "module": "./src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./react": {
+      "types": "./src/react/index.ts",
+      "import": "./src/react/index.ts"
+    },
+    "./react/jsx-runtime": {
+      "types": "./src/react/jsx-runtime.ts",
+      "import": "./src/react/jsx-runtime.ts"
+    },
+    "./react/jsx-dev-runtime": {
+      "types": "./src/react/jsx-dev-runtime.ts",
+      "import": "./src/react/jsx-dev-runtime.ts"
+    }
+  },
+  "scripts": {
+    "test": "bun test",
+    "test:yoga": "bun test tests/yoga.test.ts",
+    "test:render": "bun test tests/render.test.ts",
+    "typecheck": "tsc --noEmit",
+    "example:imperative": "bun run examples/agent-imperative.ts",
+    "example:react": "bun run examples/agent-react.tsx"
+  },
+  "dependencies": {
+    "yoga-layout-tui": "file:../yoga-layout-tui"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-reconciler": "^0.33.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": false },
+    "react-reconciler": { "optional": false }
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.0",
+    "@types/react-reconciler": "^0.33.0",
+    "react": "^19.2.0",
+    "react-reconciler": "^0.33.0",
+    "typescript": "^5"
+  }
+}
