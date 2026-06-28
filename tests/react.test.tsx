@@ -3,10 +3,10 @@
 import { describe, expect, test } from "bun:test";
 import * as React from "react";
 import { act } from "react";
-import { Box } from "../src/components/box.ts";
-import { ScrollBox } from "../src/components/scrollbox.ts";
-import { Text } from "../src/components/text.ts";
-import { TextArea } from "../src/components/textarea.ts";
+import { Box } from "../src/components/Box.ts";
+import { ScrollBox } from "../src/components/ScrollBox.ts";
+import { Text } from "../src/components/Text.ts";
+import { TextArea } from "../src/components/TextArea.ts";
 import { renderHeadless } from "../src/core/headless.ts";
 import { inputManager } from "../src/core/input.ts";
 import {

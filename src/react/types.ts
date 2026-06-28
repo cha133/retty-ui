@@ -6,10 +6,10 @@
 // convenience props (`focused`, `style`).
 
 import type { ReactNode, Ref } from "react";
-import type { Box } from "../components/box.ts";
-import type { ScrollBox } from "../components/scrollbox.ts";
-import type { Text } from "../components/text.ts";
-import type { TextArea } from "../components/textarea.ts";
+import type { Box } from "../components/Box.ts";
+import type { ScrollBox } from "../components/ScrollBox.ts";
+import type { Text } from "../components/Text.ts";
+import type { TextArea } from "../components/TextArea.ts";
 import type { LayoutStyle, RenderableOptions } from "../core/renderable.ts";
 import type { Renderer } from "../core/renderer.ts";
 

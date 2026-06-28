@@ -13,10 +13,10 @@
 import { createContext } from "react";
 import type { HostConfig, ReactContext } from "react-reconciler";
 import { DefaultEventPriority, NoEventPriority } from "react-reconciler/constants";
-import { Box } from "../components/box.ts";
-import { ScrollBox } from "../components/scrollbox.ts";
-import { Text } from "../components/text.ts";
-import { TextArea } from "../components/textarea.ts";
+import { Box } from "../components/Box.ts";
+import { ScrollBox } from "../components/ScrollBox.ts";
+import { Text } from "../components/Text.ts";
+import { TextArea } from "../components/TextArea.ts";
 import type { Renderable } from "../core/renderable.ts";
 import type { Container, Instance, Props, PublicInstance, TextInstance, Type } from "./types.ts";
 import { setInitialProperties, updateProperties } from "./utils.ts";

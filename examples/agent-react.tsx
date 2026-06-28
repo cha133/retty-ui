@@ -10,8 +10,8 @@
 //   - onSubmit wiring through the React reconciler
 
 import { useEffect, useRef, useState } from "react";
-import type { ScrollBox as ScrollboxCls } from "../src/components/scrollbox.ts";
-import type { TextArea as TextareaCls } from "../src/components/textarea.ts";
+import type { ScrollBox as ScrollboxCls } from "../src/components/ScrollBox.ts";
+import type { TextArea as TextareaCls } from "../src/components/TextArea.ts";
 import { Box, render, ScrollBox, Text, TextArea, useApp, useInput } from "../src/react/index.ts";
 
 interface LogLine {

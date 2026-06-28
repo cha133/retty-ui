@@ -1,7 +1,7 @@
 import type { Canvas } from "../core/canvas.ts";
 import type { KeyEvent } from "../core/input.ts";
 import { type LayoutStyle, Renderable, type RenderableOptions } from "../core/renderable.ts";
-import { Box, type BoxOptions } from "./box.ts";
+import { Box, type BoxOptions } from "./Box.ts";
 
 export interface ScrollboxOptions extends RenderableOptions {
   onScroll?: (offset: number) => void;

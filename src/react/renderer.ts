@@ -6,7 +6,7 @@
 //
 // Pattern: opentui/packages/react/src/reconciler/reconciler.ts::_render.
 
-import { Box } from "../components/box.ts";
+import { Box } from "../components/Box.ts";
 import { Renderer } from "../core/renderer.ts";
 
 import { createReactRoot, reconciler } from "./reconciler.ts";
